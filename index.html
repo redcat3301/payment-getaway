@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment & Activation</title>
+    <link rel="icon" type="image/x-icon" href="/Imgs/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <style>
+        :root {
+            font-size: 16px;
+            --primary-color: #1177FF;
+            --text-color: #333;
+            --white: #fff;
+            --container-width: 90%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes shine {
+            0% { opacity: 0; left: -50%; }
+            50% { opacity: 0.3; }
+            100% { opacity: 0; left: 150%; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: var(--text-color);
+            text-align: center;
+            font-size: 1.25rem;
+        }
+
+        .transparent-header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 1.25rem 1.875rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 93.75rem;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            animation: fadeIn 1s ease;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.125rem;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.875rem;
+            margin: 1.875rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            padding: 1.875rem;
+            border-radius: 0.9375rem;
+            width: 18.75rem;
+            box-shadow: 0 0.25rem 0.9375rem rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                rgba(17, 119, 255, 0.1) 0%,
+                rgba(17, 119, 255, 0.2) 50%,
+                rgba(17, 119, 255, 0.1) 100%
+            );
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .pricing-card:hover::before {
+            animation: shine 1.5s ease forwards;
+        }
+
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%,
+                #00ff88 50%,
+                var(--primary-color) 100%
+            );
+            background-size: 200% 200%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .pricing-card:hover::after {
+            opacity: 1;
+            animation: gradientShift 3s linear infinite;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .plan-price {
+            font-size: 2.25rem;
+            margin: 1.25rem 0;
+            animation: slideUp 0.8s ease;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+            margin: 1.25rem 0;
+        }
+
+        .plan-features li {
+            margin: 0.625rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            transition: transform 0.3s ease;
+        }
+
+        .plan-features li:hover {
+            transform: translateX(10px);
+        }
+
+        .container {
+            width: var(--container-width);
+            max-width: 68.75rem;
+            margin: 8.75rem auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 0.9375rem;
+            box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .container:nth-child(1) { animation-delay: 0.2s; }
+        .container:nth-child(2) { animation-delay: 0.4s; }
+        .container:nth-child(3) { animation-delay: 0.6s; }
+        .container:nth-child(4) { animation-delay: 0.8s; }
+
+        /* Add scroll-margin-top to all section targets */
+        .container {
+            scroll-margin-top: 100px;
+        }
+
+        .number-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .mobile-number {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-number:hover {
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .copy-button {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-button:active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: ripple 0.6s ease-out;
+        }
+
+        .payment-section {
+            display: flex;
+            justify-content: center;
+            gap: 1.875rem;
+            margin: 1.875rem 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            transition: transform 0.3s ease;
+            transform-origin: center;
+        }
+
+        .payment-method:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .payment-method img {
+            width: 100%;
+            max-width: 16.25rem;
+            border-radius: 0.3125rem;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .payment-method:hover img {
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 20px rgba(17, 119, 255, 0.2);
+        }
+
+        /*.video-container {
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(17, 119, 255, 0.2);
+        }*/
+
+        .video-container iframe {
+            width: 100%;
+            height: 31.25rem;
+            border-radius: 0.9375rem;
+	    margin-top: 2rem;
+        }
+
+        .form-container iframe {
+            width: 100%;
+            height: 75rem;
+            border: none;
+            /*animation: pulse 2s infinite;*/
+        }
+
+        /*@keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.005); }
+            100% { transform: scale(1); }
+        }*/
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 1.25rem;
+            margin-top: 3.125rem;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #00ff88;
+            transform: translateY(-3px);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            position: fixed;
+            right: 1rem;
+            top: 1.5rem;
+            z-index: 1001;
+        }
+
+        .hamburger .bar {
+            display: block;
+            width: 1.5625rem;
+            height: 0.1875rem;
+            margin: 0.3125rem auto;
+            background: var(--text-color);
+            transition: 0.3s;
+        }
+
+        .hamburger.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        @media (max-width: 56.25rem) {
+            :root {
+                --container-width: 95%;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 4.375rem;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 4.375rem);
+                background: var(--white);
+                flex-direction: column;
+                padding: 2rem;
+                transition: 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 0.625rem 0;
+            }
+
+            .container {
+                margin: 6.25rem auto;
+                padding: 1.25rem;
+            }
+
+            .video-container iframe {
+                height: 15rem;
+            }
+
+            .payment-method:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="transparent-header">
+        <nav>
+            <div class="logo">Gen-B-up</div>
+            <ul class="nav-links">
+                <li><a href="#plan">Plans</a></li>
+                <li><a href="#step1">Step 1</a></li>
+                <li><a href="#step2">Step 2</a></li>
+                <li><a href="#howToActivateHead">Activation</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2 id="plan">Choose Your Plan</h2>
+        <div class="pricing-container">
+            <div class="pricing-card">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">৳199</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Basic Features</li>
+                    <li><i class="fas fa-check"></i> 1 Device Support</li>
+                    <li><i class="fas fa-check"></i> 7 Days Access</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">৳499</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> All Basic Features</li>
+                    <li><i class="fas fa-check"></i> 3 Devices Support</li>
+                    <li><i class="fas fa-check"></i> 30 Days Access</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <div class="plan-name">Ultra Pro</div>
+                <div class="plan-price">৳999</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> All Pro Features</li>
+                    <li><i class="fas fa-check"></i> Unlimited Devices</li>
+                    <li><i class="fas fa-check"></i> Lifetime Access</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 id="step1">Step 1: Send Money</h2>
+        <div class="number-container">
+            <div id="mobileNumber" class="mobile-number"><strong>01689865823</strong></div>
+            <button class="copy-button" onclick="copyMobileNumber()"><i class="fa-regular fa-copy"></i> Copy</button>
+        </div>
+        <div class="payment-section">
+            <div class="payment-method"><img src="Imgs/QR.png" alt="Bkash QR"></div>
+            <div class="payment-method"><img src="Imgs/rocket.png" alt="Rocket QR"></div>
+            <div class="payment-method"><img src="Imgs/Nagad.png" alt="Nagad QR"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 id="step2">Step 2: Claim Key</h2>
+        <div class="form-container">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdOmWasWf454_bmNv4XZc23Na-e6Tky8zG-7fm3BXfjHmweLw/viewform?embedded=true" width="100%" height="1207" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 id="howToActivateHead">Watch the Activation Video</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/O8AXc6kb0p8" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>&copy; 2025 Gen-B-up. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function copyMobileNumber() {
+            navigator.clipboard.writeText("01689865823");
+            const button = document.querySelector('.copy-button');
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                button.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+            }, 2000);
+        }
+
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.nav-links') && !event.target.closest('.hamburger')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Enhanced smooth scroll with offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerHeight = document.querySelector('.transparent-header').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = targetPosition - headerHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Update URL hash without jumping
+                    history.replaceState(null, null, targetId);
+                }
+            });
+        });
+
+        // Scroll Animations
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.container, .pricing-card');
+            elements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    el.style.opacity = '1';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll();
+
+        // Parallax Header Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.transparent-header');
+            const scrolled = window.pageYOffset;
+            header.style.background = `rgba(255, 255, 255, ${Math.min(scrolled / 200, 0.95)})`;
+        });
+    </script>
+</body>
+</html>
